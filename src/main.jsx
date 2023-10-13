@@ -3,12 +3,12 @@ import ReactDOM from "react-dom/client"; // ReactDOM ? -> virtual dom that react
 import "./index.css";
 // importing routers setup func from react-router-dom
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
+import Root from "./routes/root";
 // build router
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <div>Hello World!</div>,
+    element: <Root />,
   },
 ]);
 
