@@ -4,11 +4,14 @@ import "./index.css";
 // importing routers setup func from react-router-dom
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Root from "./routes/root";
+// import error page for root route
+import ErrorPage from "./error-page";
 // build router
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
+    errorElement: <ErrorPage />,
   },
 ]);
 
