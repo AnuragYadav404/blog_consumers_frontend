@@ -3,7 +3,10 @@ import ReactDOM from "react-dom/client"; // ReactDOM ? -> virtual dom that react
 import "./index.css";
 // importing routers setup func from react-router-dom
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Root, { loader as rootLoader } from "./routes/root";
+import Root, {
+  loader as rootLoader,
+  action as rootAction,
+} from "./routes/root";
 // import error page for root route
 import ErrorPage from "./error-page";
 
@@ -16,6 +19,7 @@ const router = createBrowserRouter([
     element: <Root />,
     errorElement: <ErrorPage />,
     loader: rootLoader,
+    action: rootAction,
     children: [
       {
         path: "contacts/:contactId",

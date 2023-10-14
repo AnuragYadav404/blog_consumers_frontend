@@ -1,6 +1,6 @@
-import { Outlet, Link, useLoaderData } from "react-router-dom";
+import { Outlet, Link, useLoaderData, Form } from "react-router-dom";
 // here we import a supporting func from contact.js
-import { getContacts } from "../contact";
+import { getContacts, createContact } from "../contact";
 import { getBlogsList } from "../blogAPI";
 
 // here we define the loader function
@@ -10,12 +10,39 @@ export async function loader() {
   return { contacts, blogList };
 }
 
+export async function action({ request, params }) {
+  switch (request.method) {
+    case "POST": {
+      let formData = await request.formData();
+      // here we wanna post to localhost:3000/users/login
+      const loginResults = await fetch("http://localhost:3000/users/login", {
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify({
+          username: formData.get("username"),
+          password: formData.get("password"),
+        }),
+        headers: {
+          "Content-Type": "application/json", // Adjust content type as needed
+        },
+        credentials: "include",
+      });
+      console.log(loginResults);
+      const result = await loginResults.json();
+      console.log(result);
+    }
+  }
+  const contact = await createContact();
+  return { contact };
+}
+
 export default function Root() {
   const { contacts, blogList } = useLoaderData();
   return (
     <>
       <div id="sidebar">
         <h1>React Router Contacts</h1>
+
         <div>
           <form id="search-form" role="search">
             <input
@@ -28,9 +55,24 @@ export default function Root() {
             <div id="search-spinner" aria-hidden hidden={true} />
             <div className="sr-only" aria-live="polite"></div>
           </form>
-          <form method="post">
+          <Form method="post">
+            <input
+              type="text"
+              name="username"
+              required
+              placeholder="Enter login username"
+            />
+            <input
+              type="text"
+              name="password"
+              required
+              placeholder="Enter login password"
+            />
             <button type="submit">New</button>
-          </form>
+          </Form>
+          {/* <Form method="post">
+            <button type="submit">New</button>
+          </Form> */}
         </div>
         <nav>
           {blogList.statusCode != 200 ? (
