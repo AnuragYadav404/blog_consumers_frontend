@@ -1,15 +1,17 @@
 import { Outlet, Link, useLoaderData } from "react-router-dom";
 // here we import a supporting func from contact.js
 import { getContacts } from "../contact";
+import { getBlogsList } from "../blogAPI";
 
 // here we define the loader function
 export async function loader() {
   const contacts = await getContacts();
-  return { contacts };
+  const blogList = await getBlogsList();
+  return { contacts, blogList };
 }
 
 export default function Root() {
-  const { contacts } = useLoaderData();
+  const { contacts, blogList } = useLoaderData();
   return (
     <>
       <div id="sidebar">
@@ -31,6 +33,18 @@ export default function Root() {
           </form>
         </div>
         <nav>
+          {blogList.statusCode != 200 ? (
+            <p>
+              <i>Failed to get the latest blogs</i>
+            </p>
+          ) : (
+            <ul>
+              {blogList.articles.length == 0 && <i>No blogs!</i>}
+              {blogList.articles.map((art) => {
+                return <li key={art.id}>{art.title}</li>;
+              })}
+            </ul>
+          )}
           {contacts.length ? (
             <ul>
               {contacts.map((contact) => (
