@@ -41,7 +41,11 @@ export default function Root() {
             <ul>
               {blogList.articles.length == 0 && <i>No blogs!</i>}
               {blogList.articles.map((art) => {
-                return <li key={art.id}>{art.title}</li>;
+                return (
+                  <li key={art.id}>
+                    <Link to={art.url}>{art.title}</Link>
+                  </li>
+                );
               })}
             </ul>
           )}
