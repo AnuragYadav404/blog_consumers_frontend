@@ -22,3 +22,26 @@ export async function getBlogsList() {
     };
   }
 }
+
+export async function getArticleById(articleID) {
+  try {
+    const article = await fetch(`http://localhost:3000/articles/${articleID}`);
+    const result = await article.json();
+    if (result.article) {
+      return {
+        status: 200,
+        article: result.article,
+      };
+    } else {
+      return {
+        status: 404,
+        msg: "Article does not exist",
+      };
+    }
+  } catch (er) {
+    return {
+      status: 404,
+      msg: "Fetch for particular article failed",
+    };
+  }
+}
