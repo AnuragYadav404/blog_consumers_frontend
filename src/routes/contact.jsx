@@ -4,6 +4,9 @@ import { getArticleById } from "../blogAPI";
 
 export async function loader({ params }) {
   const article = await getArticleById(params.articleId);
+  await new Promise((res) => {
+    setTimeout(res, 2000);
+  });
   console.log("article is: ", article);
   return article;
 }

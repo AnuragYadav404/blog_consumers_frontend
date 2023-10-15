@@ -67,10 +67,9 @@ export default function EditContact() {
               name="title"
               defaultValue={articleEle.article.title}
             />
-            <input
+            <textarea
               placeholder="content"
               aria-label="Article content"
-              type="text"
               name="content"
               defaultValue={articleEle.article.content}
             />

@@ -1,4 +1,11 @@
-import { Outlet, Link, useLoaderData, Form } from "react-router-dom";
+import {
+  Outlet,
+  Link,
+  useLoaderData,
+  Form,
+  NavLink,
+  useNavigation,
+} from "react-router-dom";
 // here we import a supporting func from contact.js
 import { getContacts, createContact } from "../contact";
 import { getBlogsList } from "../blogAPI";
@@ -38,6 +45,7 @@ export async function action({ request, params }) {
 
 export default function Root() {
   const { contacts, blogList } = useLoaderData();
+  const navigation = useNavigation();
   return (
     <>
       <div id="sidebar">
@@ -70,9 +78,6 @@ export default function Root() {
             />
             <button type="submit">New</button>
           </Form>
-          {/* <Form method="post">
-            <button type="submit">New</button>
-          </Form> */}
         </div>
         <nav>
           {blogList.statusCode != 200 ? (
@@ -85,7 +90,14 @@ export default function Root() {
               {blogList.articles.map((art) => {
                 return (
                   <li key={art.id}>
-                    <Link to={art.url}>{art.title}</Link>
+                    <NavLink
+                      to={art.url}
+                      className={({ isActive, isPending }) =>
+                        isActive ? "active" : isPending ? "pending" : ""
+                      }
+                    >
+                      {art.title}
+                    </NavLink>
                   </li>
                 );
               })}
@@ -115,7 +127,10 @@ export default function Root() {
           )}
         </nav>
       </div>
-      <div id="detail">
+      <div
+        id="detail"
+        className={navigation.state === "loading" ? "loading" : ""}
+      >
         <Outlet />
       </div>
     </>
