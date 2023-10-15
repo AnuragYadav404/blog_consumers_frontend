@@ -3,6 +3,7 @@ export async function getBlogsList() {
     const articlesResponse = await fetch("http://localhost:3000/articles/");
     //   console.log(articlesResponse);
     if (articlesResponse.status == 200) {
+      // if the network requests work perfectly
       const articleData = await articlesResponse.json();
       const articles = articleData.articles;
       // articles can contain [] empty array too
@@ -12,7 +13,7 @@ export async function getBlogsList() {
       };
     }
     return {
-      statusCode: 404,
+      statusCode: articlesResponse.status,
       msg: "Fetch for blog list failed.",
     };
   } catch (error) {

@@ -9,6 +9,7 @@ import Root, {
 } from "./routes/root";
 // import error page for root route
 import ErrorPage from "./error-page";
+import EditContact, { action as editArticleAction } from "./routes/edit";
 
 // import contact component
 import Contact, { loader as articleLoader } from "./routes/contact";
@@ -29,6 +30,12 @@ const router = createBrowserRouter([
       {
         path: "contacts/:contactId",
         element: <Contact />,
+      },
+      {
+        path: "articles/:articleId/edit",
+        element: <EditContact />,
+        loader: articleLoader,
+        action: editArticleAction,
       },
     ],
   },
