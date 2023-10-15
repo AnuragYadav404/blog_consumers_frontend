@@ -54,10 +54,14 @@ export default function Root() {
   const navigation = useNavigation();
   const submit = useSubmit();
 
-  const searching = navigation.state === "loading" ? true : false;
+  // const searching = navigation.state === "loading" ? true : false;
+  console.log("Root rendered");
+  console.log(navigation.location);
+  // so the root render
   // here we can even use this? but what is this?
-  // navigation.location &&
-  // new URLSearchParams(navigation.location.search).has("q");
+  const searching =
+    navigation.location &&
+    new URLSearchParams(navigation.location.search).has("q");
 
   useEffect(() => {
     document.getElementById("q").value = query;
