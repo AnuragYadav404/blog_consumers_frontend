@@ -5,16 +5,22 @@ import {
   Form,
   NavLink,
   useNavigation,
+  useSubmit,
 } from "react-router-dom";
 // here we import a supporting func from contact.js
 import { getContacts, createContact } from "../contact";
 import { getBlogsList } from "../blogAPI";
+import { useEffect } from "react";
 
 // here we define the loader function
-export async function loader() {
+export async function loader({ request }) {
+  // here we may also use the searchParams if included in url
+  const url = new URL(request.url);
+  const query = url.searchParams.get("q");
+  // const contacts = await getContacts(query);
   const contacts = await getContacts();
-  const blogList = await getBlogsList();
-  return { contacts, blogList };
+  const blogList = await getBlogsList(query);
+  return { contacts, blogList, query };
 }
 
 export async function action({ request, params }) {
@@ -44,25 +50,24 @@ export async function action({ request, params }) {
 }
 
 export default function Root() {
-  const { contacts, blogList } = useLoaderData();
+  const { contacts, blogList, query } = useLoaderData();
   const navigation = useNavigation();
+  const submit = useSubmit();
+
+  const searching = navigation.state === "loading" ? true : false;
+  // here we can even use this? but what is this?
+  // navigation.location &&
+  // new URLSearchParams(navigation.location.search).has("q");
+
+  useEffect(() => {
+    document.getElementById("q").value = query;
+  }, [query]);
   return (
     <>
       <div id="sidebar">
         <h1>React Router Contacts</h1>
 
         <div>
-          <form id="search-form" role="search">
-            <input
-              id="q"
-              aria-label="Search contacts"
-              placeholder="Search"
-              type="search"
-              name="q"
-            />
-            <div id="search-spinner" aria-hidden hidden={true} />
-            <div className="sr-only" aria-live="polite"></div>
-          </form>
           <Form method="post">
             <input
               type="text"
@@ -79,6 +84,22 @@ export default function Root() {
             <button type="submit">New</button>
           </Form>
         </div>
+        <Form id="search-form" role="search">
+          <input
+            id="q"
+            aria-label="Search contacts"
+            placeholder="Search"
+            type="search"
+            name="q"
+            defaultValue={query}
+            // onChange={(evt) => {
+            //   submit(evt.currentTarget.form);
+            // }}
+            className={searching ? "loading" : ""}
+          />
+          <div id="search-spinner" aria-hidden hidden={!searching} />
+          <div className="sr-only" aria-live="polite"></div>
+        </Form>
         <nav>
           {blogList.statusCode != 200 ? (
             <p>

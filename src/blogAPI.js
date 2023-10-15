@@ -1,12 +1,22 @@
-export async function getBlogsList() {
+import { matchSorter } from "match-sorter";
+
+export async function getBlogsList(query) {
   try {
     const articlesResponse = await fetch("http://localhost:3000/articles/");
     //   console.log(articlesResponse);
     if (articlesResponse.status == 200) {
       // if the network requests work perfectly
       const articleData = await articlesResponse.json();
-      const articles = articleData.articles;
+      let articles = articleData.articles;
+      console.log(articles[0]);
+      // here if query exists,
+      // only matched article titles must be there
       // articles can contain [] empty array too
+      if (query) {
+        articles = matchSorter(articles, query, {
+          keys: ["title"],
+        });
+      }
       return {
         statusCode: 200,
         articles,

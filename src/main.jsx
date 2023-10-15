@@ -13,6 +13,7 @@ import EditContact, { action as editArticleAction } from "./routes/edit";
 import { action as destroyAction } from "./routes/destroy";
 // import contact component
 import Contact, { loader as articleLoader } from "./routes/contact";
+import Index from "./routes";
 // build router
 const router = createBrowserRouter([
   {
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
     loader: rootLoader,
     action: rootAction,
     children: [
+      { index: true, element: <Index /> },
       {
         path: "articles/:articleId",
         element: <Contact />,
