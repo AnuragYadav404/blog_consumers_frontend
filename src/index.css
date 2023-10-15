@@ -231,11 +231,11 @@ i {
 
 #sidebar nav a.active {
   background: hsl(224, 98%, 58%);
-  color: white;
+  color: black;
 }
 
 #sidebar nav a.pending {
-  color: hsl(224, 98%, 58%);
+  color: green;
 }
 
 #detail {

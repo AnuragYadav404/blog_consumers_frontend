@@ -10,7 +10,7 @@ import Root, {
 // import error page for root route
 import ErrorPage from "./error-page";
 import EditContact, { action as editArticleAction } from "./routes/edit";
-
+import { action as destroyAction } from "./routes/destroy";
 // import contact component
 import Contact, { loader as articleLoader } from "./routes/contact";
 // build router
@@ -36,6 +36,11 @@ const router = createBrowserRouter([
         element: <EditContact />,
         loader: articleLoader,
         action: editArticleAction,
+      },
+      {
+        path: "articles/:articleId/destroy",
+        action: destroyAction,
+        errorElement: <ErrorPage />,
       },
     ],
   },

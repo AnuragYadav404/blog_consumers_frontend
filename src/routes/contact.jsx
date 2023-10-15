@@ -32,6 +32,19 @@ export default function Contact() {
             <p>Author: {articleEle.article.author.username}</p>
             <p>Content: {articleEle.article.content}</p>
             <p>Created At: {articleEle.article.createdAt}</p>
+            <Form
+              method="delete"
+              action="destroy"
+              onSubmit={(event) => {
+                if (
+                  !confirm("Please confirm you want to delete this Article.")
+                ) {
+                  event.preventDefault();
+                }
+              }}
+            >
+              <button type="submit">Delete</button>
+            </Form>
           </div>
         ) : (
           <p>
