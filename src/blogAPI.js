@@ -27,7 +27,8 @@ export async function getArticleById(articleID) {
   try {
     const article = await fetch(`http://localhost:3000/articles/${articleID}`);
     const result = await article.json();
-    if (result.article) {
+    if (result.articleStatus == 200) {
+      // if the fetch contains an article
       return {
         status: 200,
         article: result.article,
@@ -35,10 +36,11 @@ export async function getArticleById(articleID) {
     } else {
       return {
         status: 404,
-        msg: "Article does not exist",
+        msg: result.msg,
       };
     }
   } catch (er) {
+    // this occurs if network req or fetch req fails
     return {
       status: 404,
       msg: "Fetch for particular article failed",
